@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Preprocessor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 350px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .upload-btn-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+        .upload-btn {
+            border: 2px solid #4CAF50;
+            color: white;
+            background-color: #4CAF50;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        input[type=file] {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+        }
+        .file-name {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+        .feedback {
+            margin-top: 20px;
+            color: #4CAF50;
+            font-size: 16px;
+        }
+        .error {
+            color: #FF6347;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Data Preprocessor</h1>
+        <form id="upload-form" action="/preprocess" method="post" enctype="multipart/form-data">
+            <div class="upload-btn-wrapper">
+                <button class="upload-btn">Select CSV File</button>
+                <input type="file" name="file" id="file-input" accept=".csv" onchange="showFileName()">
+            </div>
+            <div id="file-name" class="file-name"></div>
+            <button type="submit" class="upload-btn">Preprocess</button>
+        </form>
+        <div id="feedback" class="feedback"></div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('file-input');
+        const fileNameDiv = document.getElementById('file-name');
+        const feedbackDiv = document.getElementById('feedback');
+        const form = document.getElementById('upload-form');
+
+
+        function showFileName() {
+            if (fileInput.files.length > 0) {
+                fileNameDiv.textContent = `Selected file: ${fileInput.files[0].name}`;
+                feedbackDiv.textContent = '';  // Clear previous feedback
+            }
+        }
+
+        // Provide feedback after form submission
+        form.addEventListener('submit', function(event) {
+            if (fileInput.files.length === 0) {
+                event.preventDefault();
+                feedbackDiv.textContent = 'Please select a file before submitting.';
+                feedbackDiv.classList.add('error');
+            } else {
+                feedbackDiv.textContent = 'Processing... Please wait.';
+                feedbackDiv.classList.remove('error');
+            }
+        });
+    </script>
+</body>
+</html>
